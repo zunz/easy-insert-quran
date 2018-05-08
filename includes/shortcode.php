@@ -12,7 +12,10 @@ class EIQ_Shortcode {
 			'translation' => false,
 			'surah' => false,
 			'ayah' => false,
-		), $atts );	
+		), $atts );
+		
+		$a['surah'] = intval($a['surah']);
+		$a['ayah'] = intval($a['ayah']);
 		
 		if($a['surah'] && $a['ayah']) {
 			
