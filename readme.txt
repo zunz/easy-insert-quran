@@ -17,6 +17,7 @@ You can insert Quranic verses into a post or page by clicking the green button o
 You can set this plugin to bring up the Quran verse along with the translation and the recitation audio player. You can choose various language translation and recitation by setting on the Dashboard > Settings > Easy Insert Quran.
 
 This plugin uses the API from https://alquran.cloud/ to fetch the Quranic text, translations and audios.
+https://alquran.cloud/terms-and-conditions
 
 == Installation ==
 1. Upload the entire ‘easy-insert-quran’ folder to the  ‘/wp-content/plugins/’  directory.

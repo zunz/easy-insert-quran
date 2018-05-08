@@ -7,9 +7,7 @@ class EIQ_Shortcode {
 	
 	function shortcode_func($atts) {
 		
-		$a = shortcode_atts( array(
-			'audio' => 'ar.muhammadjibreel',
-			'translation' => false,
+		$a = shortcode_atts( array(			
 			'surah' => false,
 			'ayah' => false,
 		), $atts );
