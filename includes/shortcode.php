@@ -19,21 +19,21 @@ class EIQ_Shortcode {
 			
 			$default_options = get_option('eiq_settings');
 			
-			$base_url = 'http://api.alquran.cloud';
+			$reciter = $default_options['reciter'];
+			$translation = $default_options['translation'];
 			
-			// Temporary Test Config
-			// $a['translation'] = 'id.indonesian';
-			// $a['audio'] = true;
+			$base_url = 'http://api.alquran.cloud';			
 			
-			if($default_options['reciter'] != 'disabled') {
-				$request_url = $base_url.'/ayah/'.$a['surah'].':'.$a['ayah'].'/editions/'.$default_options['reciter'];
+			
+			if($reciter != 'disabled') {
+				$request_url = $base_url.'/ayah/'.$a['surah'].':'.$a['ayah'].'/editions/'.$reciter;
 			} else {
 				$request_url = $base_url.'/ayah/'.$a['surah'].':'.$a['ayah'].'/editions/quran-uthmani';
 			}	
 
 			
-			if($default_options['translation'] != 'disabled') {
-				$request_url .= ','.$default_options['translation'];
+			if($translation != 'disabled') {
+				$request_url .= ','.$translation;
 			}
 			
 			$request = wp_remote_get($request_url);
@@ -59,7 +59,7 @@ class EIQ_Shortcode {
 				$output .= '<p>'.$quran_arabic.' <span class="ayah-ending">۝'.eiq_convert_western_number($data[0]->numberInSurah).'</span></p>';		
 				$output .= '</div>';		
 				
-				if($a['audio'] && isset($data[0]->audio)) {
+				if($reciter && isset($data[0]->audio)) {
 					
 					$output .= '<div class="ins-q-audio">';
 					$output .= '<audio controls src="'.$data[0]->audio.'">
@@ -69,7 +69,7 @@ class EIQ_Shortcode {
 					
 				}
 				
-				if($default_options['translation'] != 'no-translation' && $data[1]->edition->identifier != 'quran-simple') {				
+				if($translation != 'disabled' && $data[1]->edition->identifier != 'quran-simple') {				
 					
 					$output .= '<div class="ins-q-translation">';
 					$output .= '<p>'.$data[1]->text.'</p>';
