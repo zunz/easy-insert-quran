@@ -26,6 +26,11 @@ https://alquran.cloud/terms-and-conditions
 3. Visit ‘Settings > Easy Insert Quran’ and adjust your configuration.
 4. Insert an ayah of Quran by clicking the green book button on the WYSIWYG editor panel and then select the surah and write the ayah number.
 
+== Screenshots ==
+1. Front End
+2. Post Editor
+3. Settings
+
 == Changelog ==
 
 = 1.0.0 =
