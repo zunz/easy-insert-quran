@@ -1,9 +1,10 @@
-=== Easy Wordpress Plugin ===
+=== Easy Insert Quran ===
 Contributors: zunz
 Tags: Insert Quran, Quran, Verse, Ayah
 Requires at least: 4.7
 Tested up to: 4.9.5
 Requires PHP: 5.3.0
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,3 +25,8 @@ https://alquran.cloud/terms-and-conditions
 2. Activate the plugin through the \'Plugins\' menu in WordPress.
 3. Visit ‘Settings > Easy Insert Quran’ and adjust your configuration.
 4. Insert an ayah of Quran by clicking the green book button on the WYSIWYG editor panel and then select the surah and write the ayah number.
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial version
