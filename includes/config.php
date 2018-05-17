@@ -27,7 +27,7 @@ add_action ( 'init', 'eiq_button_init' );
 
 function eiq_enqueue_plugin_scripts($plugin_array) {
     //enqueue TinyMCE plugin script with its ID.
-    $plugin_array["insert_quran_plugin"] = EIQ_PLUGIN_URL.'/assets/js/button.js';
+    $plugin_array["insert_quran_plugin"] = EIQ_PLUGIN_URL.'/assets/tinymce/button.js';
     return $plugin_array;
 }
 function eiq_register_buttons_editor($buttons) {

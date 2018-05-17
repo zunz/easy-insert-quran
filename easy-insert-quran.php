@@ -4,7 +4,7 @@ Plugin Name: Easy Insert Quran
 Plugin URI: https://themeae.com/insertquran
 Description: Easy Insert Quran helps you to insert any Quranic text in your WYSIWYG Editor.
 Author: Zunan Arif R.
-Version: 1.0.0
+Version: 1.1.0
 Author URI: https://themeae.com
 License: GPLv2 or later
 Text Domain: easy-insert-quran
