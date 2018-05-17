@@ -10,31 +10,39 @@ class EIQ_Shortcode {
 		$a = shortcode_atts( array(			
 			'surah' => false,
 			'ayah' => false,
+			'end' => false,
 		), $atts );
 		
-		$a['surah'] = intval($a['surah']);
-		$a['ayah'] = intval($a['ayah']);
+		$surah = intval($a['surah']);
+		$ayah = intval($a['ayah']);
+		$end = intval($a['end']);
 		
-		if($a['surah'] && $a['ayah']) {
+		if($surah && $ayah) {
 			
 			$default_options = get_option('eiq_settings');
 			
 			$reciter = $default_options['reciter'];
-			$translation = $default_options['translation'];
+			$translation = $default_options['translation'];			
 			
-			$base_url = 'http://api.alquran.cloud';			
+			$base_url = 'http://api.alquran.cloud';
 			
+			if($end && ($end > $ayah)) {
+				$offset_limit = '?offset='. ($ayah - 1) .'&limit='. ($end - $ayah + 1);
+			} else {
+				$offset_limit = '?offset='. ($ayah - 1) .'&limit=1';
+			}
 			
 			if($reciter != 'disabled') {
-				$request_url = $base_url.'/ayah/'.$a['surah'].':'.$a['ayah'].'/editions/'.$reciter;
+				$editions = $reciter;
 			} else {
-				$request_url = $base_url.'/ayah/'.$a['surah'].':'.$a['ayah'].'/editions/quran-uthmani';
-			}	
-
+				$editions = 'quran-uthmani';
+			}			
 			
 			if($translation != 'disabled') {
-				$request_url .= ','.$translation;
+				$editions .= ','.$translation;
 			}
+			
+			$request_url = $base_url.'/surah/'.$a['surah'].'/editions/'.$editions.$offset_limit;			
 			
 			$request = wp_remote_get($request_url);
 			
@@ -49,32 +57,44 @@ class EIQ_Shortcode {
 			
 			if( ! empty( $data ) && $data->status == 'OK') {
 				
-				$data = $data->data;	
+				$data = $data->data;				
 
-				$quran_arabic = $data[0]->text;	
+				$quran_arabic = $data[0];	
 				
 				$output = '';
 				$output .= '<div class="ins-q-wrap">';
-				$output .= '<div class="ins-q-arabic-text">';
-				$output .= '<p>'.$quran_arabic.' <span class="ayah-ending">۝'.eiq_convert_western_number($data[0]->numberInSurah).'</span></p>';		
-				$output .= '</div>';		
 				
-				if($reciter && isset($data[0]->audio)) {
+				foreach($quran_arabic->ayahs as $index => $ayah):
+				
+					$output .= '<div class="ins-q-entry">';
 					
-					$output .= '<div class="ins-q-audio">';
-					$output .= '<audio controls src="'.$data[0]->audio.'">
-					  Your browser does not support the audio element.
-					</audio>';
+					$output .= '<div class="ins-q-arabic-text">';
+					$output .= '<p>'.$ayah->text.' <span class="ayah-ending">۝'.eiq_convert_western_number($ayah->numberInSurah).'</span></p>';		
+					$output .= '</div>';		
+					
+					if($reciter && isset($ayah->audio)) {
+						
+						$output .= '<div class="ins-q-audio">';
+						$output .= '<audio controls src="'.$ayah->audio.'">
+						  Your browser does not support the audio element.
+						</audio>';
+						$output .= '</div>';
+						
+					}
+					
+					if($translation != 'disabled' && $data[1]->edition->identifier != 'quran-simple') {				
+						
+						$output .= '<div class="ins-q-translation">';
+						$output .= '<p>'.$data[1]->ayahs[$index]->text.'</p>';
+						$output .= '</div>';
+					}
+					
+					
 					$output .= '</div>';
 					
-				}
 				
-				if($translation != 'disabled' && $data[1]->edition->identifier != 'quran-simple') {				
-					
-					$output .= '<div class="ins-q-translation">';
-					$output .= '<p>'.$data[1]->text.'</p>';
-					$output .= '</div>';
-				}
+				endforeach;			
+				
 				
 				$output .= '</div>';
 				

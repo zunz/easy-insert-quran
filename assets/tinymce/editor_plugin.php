@@ -93,11 +93,11 @@ if (! current_user_can ( 'edit_posts' ) && ! current_user_can ( 'edit_pages' )) 
 	
 	<div class="eiq-mce-footer">
 		<div style="float: left">
-			<input type="button" id="cancel" name="cancel" value="<?php _e('Cancel', 'wp-shortcode'); ?>" onClick="tinyMCEPopup.close();" />
+			<input type="button" id="cancel" name="cancel" value="<?php _e('Cancel', 'easy-insert-quran'); ?>" />
 		</div>
 
 		<div style="float: right">
-			<input type="submit" id="insert" name="insert" value="<?php _e('Insert', 'wp-shortcode'); ?>" onClick="eiq_submit_shortcode();" />
+			<input type="submit" id="insert" name="insert" value="<?php _e('Insert', 'easy-insert-quran'); ?>" />
 		</div>
 	</div>	
 	
@@ -112,30 +112,59 @@ if (! current_user_can ( 'edit_posts' ) && ! current_user_can ( 'edit_pages' )) 
 			$('#ayah-start option, #ayah-end option').remove();
 			var i;
 			for (i = 1; i <= max; i++) {
-				$('#ayah-start, #ayah-end').append('<option value="'+i+'">'+i+'</option>');
-			} 
+				$('#ayah-start, #ayah-end').append('<option value="' + i + '">'+i+'</option>');
+			}
 		});
 		
 		$('#ayah-start').change(function(){
-			var theVal = $(this).val();			
-			$('#ayah-end').val(theVal).find('option').show().removeAttr('disabled');
-			var i;
-			for (i = 1; i < theVal; i++) {
-				$('#ayah-end option:eq('+(i-1)+')').attr('disabled','disabled').hide();
+			var theVal = parseInt($(this).val());			
+			var endVal = parseInt($('#ayah-end').val());
+			
+			$('#ayah-end option').show().removeAttr('disabled');
+			
+			if(theVal >= endVal) {
+				$('#ayah-end').val(theVal);
+			} else {
+				
 			}
 			
 			
+			var i;
+			for (i = 1; i < theVal; i++) {
+				$('#ayah-end option:eq(' + (i-1) + ')').attr('disabled','disabled').hide();
+			}	
+			
 		});
+		
+		$('#cancel').click(function(){
+			tinyMCEPopup.close();
+		});
+		
+		$('#insert').click(function(){
+			if(window.tinyMCE) {		
+				var shortcode = '';
+				var surah = $('#select-surah').val();
+				var ayah = $('#ayah-start').val();
+				var ayahEnd = $('#ayah-end').val();
+				
+				if(ayah && surah) {
+					shortcode = '[insert_quran surah="' + surah + '" ayah="' + ayah + '"';
+					if(ayahEnd && ayahEnd > ayah) {
+						shortcode += ' end="' + ayahEnd + '"';
+					}
+					shortcode += ']\n';
+				}				
+				
+				tinyMCEPopup.editor.insertContent(shortcode);
+				tinyMCEPopup.editor.execCommand('mceRepaint');
+				tinyMCEPopup.close();
+			}
+			return;
+		});	
+		
 	});
 
-	function eiq_submit_shortcode() {		
-		if(window.tinyMCE) {
-			tinyMCEPopup.editor.insertContent('asdf');
-			tinyMCEPopup.editor.execCommand('mceRepaint');
-			tinyMCEPopup.close();
-		}
-		return;
-	}
+	
 </script>
 </body>
 </html>
