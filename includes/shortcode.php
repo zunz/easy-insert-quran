@@ -32,11 +32,11 @@ class EIQ_Shortcode {
 				$offset_limit = '?offset='. ($ayah - 1) .'&limit=1';
 			}
 			
+			$editions = 'quran-uthmani';
+			
 			if($reciter != 'disabled') {
-				$editions = $reciter;
-			} else {
-				$editions = 'quran-uthmani';
-			}			
+				$editions .= ','.$reciter;
+			}		
 			
 			if($translation != 'disabled') {
 				$editions .= ','.$translation;
@@ -59,7 +59,20 @@ class EIQ_Shortcode {
 				
 				$data = $data->data;				
 
-				$quran_arabic = $data[0];	
+				$quran_arabic = $data[0];
+				$quran_recitation = false;
+				$quran_translation = false;
+				
+				if($reciter != 'disabled' && $data[1]->edition->identifier != 'quran-simple') {
+					$quran_recitation = $data[1];
+				}
+				if($translation != 'disabled') {
+					if($quran_recitation && $data[2]->edition->identifier != 'quran-simple') {
+						$quran_translation = $data[2];
+					} elseif($data[1]->edition->identifier != 'quran-simple') {
+						$quran_translation = $data[1];
+					}					
+				}
 				
 				$output = '';
 				$output .= '<div class="ins-q-wrap">';
@@ -72,20 +85,19 @@ class EIQ_Shortcode {
 					$output .= '<p>'.$ayah->text.' <span class="ayah-ending">۝'.eiq_convert_western_number($ayah->numberInSurah).'</span></p>';		
 					$output .= '</div>';		
 					
-					if($reciter && isset($ayah->audio)) {
+					if($quran_recitation) {
 						
 						$output .= '<div class="ins-q-audio">';
-						$output .= '<audio controls src="'.$ayah->audio.'">
+						$output .= '<audio controls src="'.$quran_recitation->ayahs[$index]->audio.'">
 						  Your browser does not support the audio element.
 						</audio>';
 						$output .= '</div>';
 						
 					}
 					
-					if($translation != 'disabled' && $data[1]->edition->identifier != 'quran-simple') {				
-						
+					if($quran_translation) {						
 						$output .= '<div class="ins-q-translation">';
-						$output .= '<p>'.$data[1]->ayahs[$index]->text.'</p>';
+						$output .= '<p>'.$quran_translation->ayahs[$index]->text.'</p>';
 						$output .= '</div>';
 					}
 					
