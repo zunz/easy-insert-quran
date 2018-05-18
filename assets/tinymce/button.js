@@ -16,8 +16,8 @@ jQuery(document).ready(function($) {
                 ed.windowManager.open({					
 					file : url + '/editor_plugin.php',
 					inline : 1,
-					width : 550,
-                    height : 400					
+					width : 350,
+                    height : 220					
 				},{
 					plugin_url : url					
 				});
