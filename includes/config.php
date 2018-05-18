@@ -10,7 +10,11 @@ function eiq_enqueue_scripts(){
 	wp_enqueue_style( 'amiri-google-fonts', add_query_arg( $query_args, "//fonts.googleapis.com/css" ), array(), null );
 	
 	/* -- Enqueue CSS File -- */			
-	wp_enqueue_style( 'ins-q-style', EIQ_PLUGIN_URL.'/assets/css/insert-quran-styles.css');		
+	wp_enqueue_style( 'ins-q-style', EIQ_PLUGIN_URL.'/assets/css/insert-quran-styles.css');	
+
+	/* -- Enqueue JS File -- */
+	wp_enqueue_style( 'ins-q-style', EIQ_PLUGIN_URL.'/assets/css/insert-quran-styles.css');
+	wp_enqueue_script( 'eiq-script', EIQ_PLUGIN_URL . '/assets/js/easy-insert-quran.js', array( 'jquery' ), false, true);
 
 }
 add_action( 'wp_enqueue_scripts', 'eiq_enqueue_scripts' );
