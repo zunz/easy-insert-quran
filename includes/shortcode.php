@@ -11,6 +11,8 @@ class EIQ_Shortcode {
 			'surah' => false,
 			'ayah' => false,
 			'end' => false,
+			'translation' => false,
+			'reciter' => false,
 		), $atts );
 		
 		$surah = intval($a['surah']);
@@ -22,7 +24,23 @@ class EIQ_Shortcode {
 			$default_options = get_option('eiq_settings');
 			
 			$reciter = $default_options['reciter'];
-			$translation = $default_options['translation'];			
+			$translation = $default_options['translation'];	
+
+			if($a['translation']) {
+				if($a['translation'] == 'no') {
+					$translation = 'disabled';
+				} else {
+					$translation = $a['translation'];
+				}
+			}
+			
+			if($a['reciter']) {
+				if($a['reciter'] == 'no') {
+					$reciter = 'disabled';
+				} else {
+					$reciter = $a['reciter'];
+				}
+			}
 			
 			$base_url = 'http://api.alquran.cloud';
 			
@@ -63,16 +81,25 @@ class EIQ_Shortcode {
 				$quran_recitation = false;
 				$quran_translation = false;
 				
-				if($reciter != 'disabled' && $data[1]->edition->identifier != 'quran-simple') {
+				if($reciter != 'disabled') {
 					$quran_recitation = $data[1];
-				}
-				if($translation != 'disabled') {
-					if($quran_recitation && $data[2]->edition->identifier != 'quran-simple') {
+				}				
+				
+				if($translation != 'disabled') {					
+					if($quran_recitation) {
 						$quran_translation = $data[2];
-					} elseif($data[1]->edition->identifier != 'quran-simple') {
+					} else {
 						$quran_translation = $data[1];
-					}					
+					}								
 				}
+				
+				if($quran_recitation->edition->identifier == 'quran-simple') {
+					$quran_recitation = false;
+				}
+				if($quran_translation->edition->identifier == 'quran-simple') {
+					$quran_translation = false;
+				}
+				
 				
 				$output = '';
 				$output .= '<div class="ins-q-wrap">';
