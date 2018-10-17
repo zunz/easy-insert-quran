@@ -1,6 +1,6 @@
 === Easy Insert Quran ===
 Contributors: zunz
-Tags: Insert Quran, Quran, Verse, Ayah
+Tags: Insert Quran, Quran, Verse, Ayah, Shortcode, Quran Shortcode, Islamic, Islam
 Requires at least: 4.7
 Tested up to: 4.9.5
 Requires PHP: 5.3.0
@@ -31,6 +31,11 @@ This plugin uses the API from [alquran.cloud](https://alquran.cloud/ "Alhamdulil
 3. Settings
 
 == Changelog ==
+
+= 1.6.0 =
+* Add Multi-ayah feature
+* Add custom translation feature for each shortcode
+* Add custom recitation feature for each shortcode
 
 = 1.0.0 =
 * Initial version
